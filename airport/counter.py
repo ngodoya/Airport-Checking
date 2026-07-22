@@ -10,7 +10,7 @@ class CheckInCounter:
 
     def check_in(self, passenger, luggage_items):
         if self.flight.is_full():
-            raise FlightFullError(f"Flight {self.flight.code} is full.")
+            raise FlightFullError(self.flight.code)
 
         for item in luggage_items:
             item.validate_weight()
