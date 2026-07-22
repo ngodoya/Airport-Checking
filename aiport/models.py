@@ -2,15 +2,15 @@ from abc import ABC, abstractmethod
 from typing import Iterator
 import uuid
 
-from .exceptions import FlightFullError
+from .exceptions import FlightFullError, OverweightLuggageError
 
 
 class Passenger:
-    
-
-    def __init__(self, name: str, document_id: str, booking_ref: str, is_vip: bool = False):
+    def __init__(
+        self, name: str, document_id: str, booking_ref: str, is_vip: bool = False
+    ):
         self.name: str = name
-        self.__document_id: str = document_id 
+        self.__document_id: str = document_id
         self.booking_ref: str = booking_ref
         self.is_vip: bool = is_vip
 
@@ -33,21 +33,18 @@ class Passenger:
         return f"Passenger({self.name}{vip_tag}, ref={self.booking_ref})"
 
 
-
-
 class Luggage(ABC):
-    
     def __init__(self, weight: float):
         self.weight: float = weight
         self._tag_id: str = uuid.uuid4().hex[:8].upper()
 
     @abstractmethod
     def validate_weight(self) -> None:
-        
+
         pass
 
     def get_tag(self) -> str:
-    
+
         return self._tag_id
 
     def __repr__(self) -> str:
@@ -55,8 +52,6 @@ class Luggage(ABC):
 
 
 class CarryOn(Luggage):
-    
-
     MAX_WEIGHT: float = 10.0
 
     def validate_weight(self) -> None:
@@ -65,8 +60,6 @@ class CarryOn(Luggage):
 
 
 class CheckedLuggage(Luggage):
-    
-
     MAX_WEIGHT: float = 23.0
 
     def validate_weight(self) -> None:
@@ -78,19 +71,22 @@ class CheckedLuggage(Luggage):
 #  BoardingPass
 # ──────────────────────────────────────────────
 class BoardingPass:
-    
-
-    def __init__(self, passenger: Passenger, flight: "Flight", seat: str, luggage_list: list):
+    def __init__(
+        self, passenger: Passenger, flight: "Flight", seat: str, luggage_list: list
+    ):
         self.passenger: Passenger = passenger
         self.flight: "Flight" = flight
         self.seat: str = seat
         self.luggage_list: list = luggage_list
 
     def print_pass(self) -> str:
-        
-        luggage_info = ", ".join(
-            f"{l.__class__.__name__}({l.weight}kg)" for l in self.luggage_list
-        ) or "Sin equipaje"
+
+        luggage_info = (
+            ", ".join(
+                f"{l.__class__.__name__}({l.weight}kg)" for l in self.luggage_list
+            )
+            or "Sin equipaje"
+        )
 
         return (
             "╔══════════════════════════════════════╗\n"
@@ -114,7 +110,6 @@ class BoardingPass:
 #  Flight
 # ──────────────────────────────────────────────
 class Flight:
-
     def __init__(self, code: str, destination: str, departure: str, capacity: int):
         self.code: str = code
         self.destination: str = destination
@@ -132,8 +127,8 @@ class Flight:
     def assign_seat(self) -> str:
         if self.is_full():
             raise FlightFullError(self.code)
-        seat_number = len(self._assigned_seats) + 1
-        seat = f"{seat_number}A"
+        letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[len(self._assigned_seats)]
+        seat = f"1{letter}"
         self._assigned_seats.append(seat)
         return seat
 
