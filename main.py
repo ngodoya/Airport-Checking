@@ -8,7 +8,6 @@ from airport.exceptions import (
 )
 
 if __name__ == "__main__":
-
     flight = Flight("AV001", "Bogota", "2026-06-10 08:30", capacity=2)
     queue = CheckInQueue()
     counter = CheckInCounter("CTR-01", flight, queue)
