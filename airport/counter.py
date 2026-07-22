@@ -1,5 +1,5 @@
-from models import BoardingPass
-from exception import FlightFullError, OverweightLuggageError
+from .models import BoardingPass
+from .exceptions import FlightFullError, OverweightLuggageError
 
 
 class CheckInCounter:
@@ -19,7 +19,7 @@ class CheckInCounter:
 
         boarding_pass = BoardingPass(passenger, self.flight, seat, luggage_items)
 
-        self.flight.register_boartdin_pass(boarding_pass)
+        self.flight.add_boarding_pass(boarding_pass)
         return boarding_pass
 
     def process_queue(self):
@@ -27,7 +27,7 @@ class CheckInCounter:
             passenger, luggage_items = self.queue.next_passenger()
 
             try:
-                boarding_pass = self.queue.next(passenger, luggage_items)
+                boarding_pass = self.check_in(passenger, luggage_items)
                 yield ("SUCCESS", passenger, boarding_pass)
 
             except FlightFullError as error:
