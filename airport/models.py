@@ -83,7 +83,8 @@ class BoardingPass:
 
         luggage_info = (
             ", ".join(
-                f"{l.__class__.__name__}({l.weight}kg)" for l in self.luggage_list
+                f"{item.__class__.__name__}({item.weight}kg)"
+                for item in self.luggage_list
             )
             or "Sin equipaje"
         )
@@ -93,13 +94,13 @@ class BoardingPass:
             "║         BOARDING PASS                ║\n"
             "╠══════════════════════════════════════╣\n"
             f"║ Passanger : {self.passenger.get_name():<25}║\n"
-            f"║ Id: {self.passenger.get_masked_id():<25}║\n"
-            f"║ Flight    : {self.flight.code:<25}║\n"
-            f"║ Destiny  : {self.flight.destination:<25}║\n"
-            f"║ Exit   : {self.flight.departure:<25}║\n"
-            f"║ Seat  : {self.seat:<25}║\n"
-            f"║ Lugagge : {luggage_info:<25}║\n"
-            "╚══════════════════════════════════════╝"
+            f"║ Id: {self.passenger.get_masked_id():<25}        ║\n"
+            f"║ Flight   : {self.flight.code:<25} ║\n"
+            f"║ Destiny  : {self.flight.destination:<25} ║\n"
+            f"║ Exit   : {self.flight.departure:<25}   ║\n"
+            f"║ Seat  : {self.seat:<25}    ╚═══════════╗\n"
+            f"║ Lugagge : {luggage_info:<25} ║\n"
+            "╚══════════════════════════════════════════════════╝"
         )
 
     def __repr__(self) -> str:

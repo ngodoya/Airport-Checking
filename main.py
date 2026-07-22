@@ -16,12 +16,12 @@ if __name__ == "__main__":
     p2 = Passenger("Luis Perez", "9988776655", "BR002", is_vip=True)
     p3 = Passenger("Marta Ruiz", "1122334455", "BR003", is_vip=False)
 
-    queue.enqueue(p1)
-    queue.enqueue(p2)
-
-    p2_luggage = [CheckedLuggage(30.0)]
     p1_luggage = [CarryOn(8.5), CheckedLuggage(20.0)]
+    p2_luggage = [CheckedLuggage(30.0)]
     p3_luggage = [CarryOn(5.0)]
+
+    queue.enqueue(p1, p1_luggage)
+    queue.enqueue(p2, p2_luggage)
 
     next_p = queue.next_passenger()
     try:
