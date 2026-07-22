@@ -64,10 +64,12 @@ classDiagram
     }
 
     class CarryOn {
+        +float MAX_WEIGHT = 10.0
         +validate_weight() void
     }
 
     class CheckedLuggage {
+        +float MAX_WEIGHT = 23.0
         +validate_weight() void
     }
 
@@ -107,6 +109,7 @@ classDiagram
     CheckInCounter "1" --> "1" Flight : operates on
     CheckInCounter "1" --> "1" CheckInQueue : reads from
 ```
+
 ## Tecnologias y Conceptos Aplicados
 
 - **Lenguaje:** Python 3.10+

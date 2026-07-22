@@ -1,11 +1,7 @@
 from airport.models import Flight, Passenger, CarryOn, CheckedLuggage
 from airport.queueing import CheckInQueue
 from airport.counter import CheckInCounter
-from airport.exceptions import (
-    OverweightLuggageError,
-    FlightFullError,
-    EmptyQueueError,
-)
+from airport.exceptions import EmptyQueueError
 
 if __name__ == "__main__":
     flight = Flight("AV001", "Bogota", "2026-06-10 08:30", capacity=1)
@@ -22,26 +18,19 @@ if __name__ == "__main__":
 
     queue.enqueue(p1, p1_luggage)
     queue.enqueue(p2, p2_luggage)
+    queue.enqueue(p3, p3_luggage)
 
-    next_p = queue.next_passenger()
-    try:
-        counter.check_in(next_p, p2_luggage)
-    except OverweightLuggageError as e:
-        print(f"Rechazado: {e}")
-
-    next_p = queue.next_passenger()
-    boarding_pass = counter.check_in(next_p, p1_luggage)
-    print(boarding_pass.print_pass())
-
-    try:
-        counter.check_in(p3, p3_luggage)
-    except FlightFullError as e:
-        print(f"Rechazado: {e}")
+    for status, passenger, result in counter.process_queue():
+        if status == "SUCCESS":
+            print(f"Successful check-in for {passenger.get_name()}:")
+            print(result.print_pass())
+        else:
+            print(f"Rejected ({passenger.get_name()}): {result}")
 
     for pass_issued in flight:
-        print(f"Pase en vuelo: {pass_issued.passenger.get_name()}")
+        print(f"Boarding pass on flight: {pass_issued.passenger.get_name()}")
 
     try:
         queue.next_passenger()
     except EmptyQueueError as e:
-        print(f"Capturado: {e}")
+        print(f"Caught: {e}")
