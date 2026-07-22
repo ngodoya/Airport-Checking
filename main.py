@@ -3,7 +3,6 @@ from airport.queueing import CheckInQueue
 from airport.counter import CheckInCounter
 from airport.exceptions import (
     OverweightLuggageError,
-    FlightFullError,
     EmptyQueueError,
 )
 
@@ -31,7 +30,7 @@ if __name__ == "__main__":
     print(boarding_pass.print_pass())
 
     print("\n=== 2. Queue Processing Generator Demonstration ===")
-
+    queue.enqueue(p1, p1_luggage)
     queue.enqueue(p2, p2_luggage)
     queue.enqueue(p3, p3_luggage)
 
